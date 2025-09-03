@@ -39,11 +39,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Routers
 app.include_router(health_router.router)
 app.include_router(recommendation_router.router, prefix="")
 app.include_router(notes_router.router)
 
+
 if __name__ == "__main__":
     loggerutil.setup_logging()
-    uvicorn.run("main:app", host="0.0.0.0", port=Settings.API_PORT, reload=False,
-                loop="asyncio", )
+    logger.info("🚀 Starting API server...")
+    logger.info(f"🌐 Docs available at: http://localhost:{Settings.API_PORT}/docs")
+    logger.info(f"📘 ReDoc available at: http://localhost:{Settings.API_PORT}/redoc")
+
+    uvicorn.run(
+        "aimlpy.main:app",  # ✅ fixed import path
+        host="0.0.0.0",
+        port=Settings.API_PORT,
+        reload=False,
+        loop="asyncio",
+    )
